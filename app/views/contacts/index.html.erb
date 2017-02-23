@@ -1,0 +1,11 @@
+<h2>ContactController#index</h2>
+
+<% @contacts.each do |contact|%>
+    <%= contact.name%>
+      <%= link_to 'detail', show_contact_path(contact.id)%>
+      <%= link_to 'edit', edit_contact_path(contact.id)%>
+      <%= link_to 'Delete', contact, method: :delete, data: { confirm: 'Are you sure?' } %><br>
+<%end%>
+<br>
+<%= link_to 'new contact', new_contact_path %><br>
+

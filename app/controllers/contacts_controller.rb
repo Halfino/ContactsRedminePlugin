@@ -9,7 +9,7 @@ class ContactsController < ApplicationController
 
   def index
     #contacts assigned to current project only
-    @contacts = Contact.all#.where(project_id: @project.id )
+    @contacts = Contact.all.where(project_id: @project.id )
   end
 
   def new

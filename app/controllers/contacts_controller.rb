@@ -5,11 +5,11 @@ class ContactsController < ApplicationController
   include AttachmentsHelper
 
   before_filter :find_contact, :only => [:edit, :update, :destroy, :show]
-  before_filter :find_project
+  before_filter :find_optional_project
 
   def index
     #contacts assigned to current project only
-    @contacts = Contact.all.where(project_id: @project.id )
+    @contacts = Contact.all#.where(project_id: @project.id )
   end
 
   def new
@@ -25,7 +25,7 @@ class ContactsController < ApplicationController
     if @contact.save
       render_attachment_warning_if_needed(@contact)
       flash[:notice] = l(:notice_successful_create)
-      redirect_to controller: 'contacts', action: 'index', project_id: @contact.project_id
+      redirect_to project_contacts_path(@project)
     else
       #flash[:notice] = l(:notice_params_needed)
       render :action => 'new'
@@ -44,7 +44,7 @@ class ContactsController < ApplicationController
     if @contact.update_attributes(params[:contact])
       render_attachment_warning_if_needed(@contact)
       flash[:notice] = l(:notice_successful_update)
-      redirect_to contacts_path(@contact.project_id)
+      redirect_to project_contacts_path(@project)
     else
       render :action => 'edit', project_id: @contact.project_id
     end
@@ -54,7 +54,7 @@ class ContactsController < ApplicationController
     project_id = @contact.project_id
     @contact.destroy
     flash[:notice] = l(:notice_successful_delete)
-    redirect_to contacts_path(project_id)
+    redirect_to project_contacts_path(@project)
   end
 
   private

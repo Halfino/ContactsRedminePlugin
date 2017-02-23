@@ -6,14 +6,12 @@ Redmine::Plugin.register :contacts do
 
   project_module :contacts do
     permission :view_contacts, :contacts => [:index, :show]
-    permission :create_contact, :contacts => [:index, :show, :new]
-    permission :edit_contact, :contacts => [:index, :show, :edit, :new]
-    permission :controll_contact, :contacts => [:index, :show, :edit, :new, :destroy]
-    permission :delete_contacts, :contacts => [:index, :show, :edit, :destroy]
-
+    permission :create_contact, :contacts => [:index, :show, :new, :create]
+    permission :edit_contact, :contacts => [:index, :show, :edit, :new, :create, :update]
+    permission :delete_contacts, :contacts => [:index, :show, :destroy]
   end
 
-  menu :project_menu, :contacts, {:controller => 'contacts', :action => 'index'}, :caption => 'Contacts',
+  menu :project_menu, :contacts, :project_contacts_path, :caption => 'Contacts',
     :after => :news
 
 end

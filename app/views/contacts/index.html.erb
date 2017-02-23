@@ -2,10 +2,19 @@
 
 <% @contacts.each do |contact|%>
     <%= contact.name%>
-      <%= link_to 'detail', show_contact_path(contact.id)%>
-      <%= link_to 'edit', edit_contact_path(contact.id)%>
-      <%= link_to 'Delete', contact, method: :delete, data: { confirm: 'Are you sure?' } %><br>
+    <% if User.current.allowed_to?(:view_contacts,@project) %>
+      <%= link_to 'detail', project_contact_path(@project, contact)%>
+    <%end%>
+    <% if User.current.allowed_to?(:edit_contact,@project) %>
+      <%= link_to 'edit', edit_project_contact_path(@project, contact)%>
+    <%end%>
+    <% if User.current.allowed_to?(:delete_contacts,@project) %>
+      <%= link_to 'delete', [@project, contact], data:{:confirm => "Are you sure to delete this contact?"},
+                  :method => :delete%>
+    <%end%>
+    <br>
 <%end%>
 <br>
-<%= link_to 'new contact', new_contact_path %><br>
-
+<% if User.current.allowed_to?(:create_contact,@project) %>
+  <%= link_to 'new contact', new_project_contact_path(@project) %><br>
+<%end%>

@@ -32,4 +32,9 @@ class Contact < ActiveRecord::Base
         where(Project.allowed_to_condition(args.shift || User.current, :view_contacts, *args))}
 
 
+
+  # Returns true if the contact can be edited by user, otherwise false
+  def editable_by?(usr)
+    usr.allowed_to?(:edit_contact, project) || usr.allowed_to?(:delete_contacts, project)
+  end
 end

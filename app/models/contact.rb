@@ -10,7 +10,6 @@ class Contact < ActiveRecord::Base
   acts_as_attachable delete_permission: :delete_contacts, view_permission: :view_contacts
   belongs_to :project
 
-
   acts_as_event :datetime => :updated_at,
                 :description => nil,
                 :title => Proc.new {|o| "#{l(:label_contact_name)} #{o.name}"},
@@ -25,13 +24,9 @@ class Contact < ActiveRecord::Base
 
   acts_as_searchable :columns => "#{table_name}.name", :date_column => 'created_at'
 
-
-
   scope :visible, lambda {|*args|
     joins(:project).
         where(Project.allowed_to_condition(args.shift || User.current, :view_contacts, *args))}
-
-
 
   # Returns true if the contact can be edited by user, otherwise false
   def editable_by?(usr)

@@ -72,7 +72,6 @@ class ContactsController < ApplicationController
 
   private
 
-
   def find_contact
     @contact = Contact.find(params[:id])
   rescue ActiveRecord::RecordNotFound
@@ -83,6 +82,4 @@ class ContactsController < ApplicationController
     scope = @query.results_scope(options)
     scope
   end
-
-
 end

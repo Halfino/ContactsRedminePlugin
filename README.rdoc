@@ -2,12 +2,11 @@
 
 basic contacts redmine plugin adding contacts to project. Implemented with name only.
 
-supporting: 
+implemented: 
    custom fields
    activity stream
    attachements
-   searching model
+   model searchable
    permissons
+   redmine query for contact index
 
-TODO:
-  redmine query to select contacts according to project. now used activeRecord query.

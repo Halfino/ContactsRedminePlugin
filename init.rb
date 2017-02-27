@@ -7,7 +7,7 @@ Redmine::Plugin.register :contacts do
   project_module :contacts do
     permission :view_contacts, :contacts => [:index, :show]
     permission :create_contact, :contacts => [:index, :show, :new, :create]
-    permission :edit_contact, :contacts => [:index, :show, :edit, :new, :create, :update]
+    permission :edit_contact, :contacts => [:index, :show, :edit, :update]
     permission :delete_contacts, :contacts => [:index, :show, :destroy]
   end
 

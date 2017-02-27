@@ -3,19 +3,33 @@ class ContactsController < ApplicationController
   helper :custom_fields
   helper :attachments
   include AttachmentsHelper
+  helper :queries
+  include QueriesHelper
+  helper :sort
+  include SortHelper
 
   before_filter :find_contact, :only => [:edit, :update, :destroy, :show]
   before_filter :find_optional_project
 
   def index
-    #contacts assigned to current project only
-    @contacts = Contact.all.where(project_id: @project.id )
+
+    @query = ContactQuery.build_from_params(params, :project => @project, :name => '_')
+
+    sort_init(@query.sort_criteria.empty? ? [['name', 'desc']] : @query.sort_criteria)
+    sort_update(@query.sortable_columns)
+    scope = contact_scope(:order => sort_clause).
+        includes(:project)
+
+        @entry_count = scope.count
+        @entry_pages = Paginator.new @entry_count, per_page_option, params['page']
+        @entries = scope.offset(@entry_pages.offset).limit(@entry_pages.per_page).to_a
+
+        render :layout => !request.xhr?
   end
 
   def new
     @contact = Contact.new
     @contact.safe_attributes = params[:contact]
-
   end
 
   def create
@@ -27,7 +41,7 @@ class ContactsController < ApplicationController
       flash[:notice] = l(:notice_successful_create)
       redirect_to project_contacts_path(@project)
     else
-      #flash[:notice] = l(:notice_params_needed)
+      flash[:alert] = l(:notice_params_needed)
       render :action => 'new'
     end
   end
@@ -51,7 +65,6 @@ class ContactsController < ApplicationController
   end
 
   def destroy
-    project_id = @contact.project_id
     @contact.destroy
     flash[:notice] = l(:notice_successful_delete)
     redirect_to project_contacts_path(@project)
@@ -65,5 +78,11 @@ class ContactsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render_404
   end
+
+  def contact_scope(options={})
+    scope = @query.results_scope(options)
+    scope
+  end
+
 
 end

@@ -4,3 +4,5 @@ en:
   label_contact_name: "Contact name:"
   label_contact_plural: "Contacts"
   notice_params_needed: "Parameters with star (*) are needed"
+  field_created_at: "Created at"
+  field_updated_at: "Updated at"

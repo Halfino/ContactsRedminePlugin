@@ -1,20 +1,10 @@
-<h2>ContactController#index</h2>
-
-<% @contacts.each do |contact|%>
-    <%= contact.name%>
-    <% if User.current.allowed_to?(:view_contacts,@project) %>
-      <%= link_to 'detail', project_contact_path(@project, contact)%>
-    <%end%>
-    <% if User.current.allowed_to?(:edit_contact,@project) %>
-      <%= link_to 'edit', edit_project_contact_path(@project, contact)%>
-    <%end%>
-    <% if User.current.allowed_to?(:delete_contacts,@project) %>
-      <%= link_to 'delete', [@project, contact], data:{:confirm => "Are you sure to delete this contact?"},
-                  :method => :delete%>
-    <%end%>
-    <br>
+<% unless @entries.empty? %>
+<%= render :partial => 'list', :locals => { :entries => @entries }%>
+<span class="pagination"><%= pagination_links_full @entry_pages, @entry_count %></span>
 <%end%>
-<br>
+<p>
 <% if User.current.allowed_to?(:create_contact,@project) %>
-  <%= link_to 'new contact', new_project_contact_path(@project) %><br>
+    <%= link_to 'new contact', new_project_contact_path(@project) %><br>
 <%end%>
+</p>
+

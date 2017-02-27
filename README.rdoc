@@ -1,3 +1,13 @@
 = contacts
 
-Description goes here
+basic contacts redmine plugin adding contacts to project. Implemented with name only.
+
+supporting: 
+   custom fields
+   activity stream
+   attachements
+   searching model
+   permissons
+
+TODO:
+  redmine query to select contacts according to project. now used activeRecord query.
